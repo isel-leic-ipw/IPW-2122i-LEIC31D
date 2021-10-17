@@ -17,3 +17,7 @@ Dia      | Horas         | Sala
 -------- | --------------| ------
 3ª feira | 12:30 - 14:00 | G.2.10
 6ª feira | 08:00 - 11:00 | G.2.10
+
+#### Trabalhos Práticos
+
+* [Série de Exercícios (JavaScript)](https://github.com/isel-leic-ipw/IPW-2022i-LEIC31N/wiki/PI-2122-2-A1)
