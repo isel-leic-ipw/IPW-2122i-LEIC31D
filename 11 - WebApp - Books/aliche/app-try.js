@@ -3,6 +3,9 @@
 const data_ext = require('./app-data-ext-books');
 const data_int = require('./app-data-int-mem');
 
+const services =
+	require('./app-services')(data_ext, data_int);
+
 async function tryDataExtFind() {
 	const book = await data_ext.findBook(process.argv[2]);
 
@@ -51,12 +54,43 @@ async function tryDataExtInt() {
 	console.log(JSON.stringify(noBooks, null, 2));
 }
 
+async function tryServices() {
+	
+	async function findAndSaveBook(query) {
+		const book = await services.searchBook(query);
+		book.title = "X";
+		book.batata = "_#$R";
+		return services.addBook(book.id);
+	}
+	
+	for (const query of process.argv.slice(2)) {
+		await findAndSaveBook(query);
+	}
+
+	const books = await services.getAllBooks();
+
+	console.log(':: BOOKS LIST ::');
+	console.log(JSON.stringify(books, null, 2));
+	
+	for (const book of books) {
+		await services.delBook(book.id);
+		console.log(':: DELETED ::');
+		console.log('ID:', book.id);	
+	}
+
+	const noBooks = await services.getAllBooks();
+
+	console.log(':: FINAL BOOKS LIST ::');
+	console.log(JSON.stringify(noBooks, null, 2));
+}
+
 async function main() {
 	try {
 		
 		//await tryDataExtFind();
 		//await tryDataExtGet();
-		await tryDataExtInt();
+		//await tryDataExtInt();
+		await tryServices();
 
 	} catch (err) {
 		console.log(':: FAILURE ::');
