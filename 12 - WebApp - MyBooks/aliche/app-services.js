@@ -7,11 +7,16 @@ module.exports = function(data_ext, data_int) {
 		return data_int.saveBook(book);
 	}
 	
+	async function getAllBooks(bookId) {
+		const books = await data_int.listBooks();
+		return { books };
+	}
+	
 	return {
 		searchBook: data_ext.findBook,
 		addBook,
 		getBook: data_int.loadBook,
 		delBook: data_int.deleteBook,
-		getAllBooks: data_int.listBooks
+		getAllBooks
 	};
 };
