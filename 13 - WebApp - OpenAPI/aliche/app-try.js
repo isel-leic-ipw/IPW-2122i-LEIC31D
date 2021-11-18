@@ -41,17 +41,20 @@ async function tryDataExtInt() {
 
 	console.log(':: BOOKS LIST ::');
 	console.log(JSON.stringify(books, null, 2));
+	console.log();
 	
 	for (const book of books) {
 		await data_int.deleteBook(book.id);
 		console.log(':: DELETED ::');
 		console.log('ID:', book.id);	
+		console.log();
 	}
 
 	const noBooks = await data_int.listBooks();
 
 	console.log(':: FINAL BOOKS LIST ::');
 	console.log(JSON.stringify(noBooks, null, 2));
+	console.log();
 }
 
 async function tryServices() {
@@ -59,7 +62,6 @@ async function tryServices() {
 	async function findAndSaveBook(query) {
 		const book = await services.searchBook(query);
 		book.title = "X";
-		book.batata = "_#$R";
 		return services.addBook(book.id);
 	}
 	
@@ -71,17 +73,20 @@ async function tryServices() {
 
 	console.log(':: BOOKS LIST ::');
 	console.log(JSON.stringify(books, null, 2));
+	console.log();
 	
 	for (const book of books) {
 		await services.delBook(book.id);
 		console.log(':: DELETED ::');
 		console.log('ID:', book.id);	
+		console.log();
 	}
 
 	const noBooks = await services.getAllBooks();
 
 	console.log(':: FINAL BOOKS LIST ::');
 	console.log(JSON.stringify(noBooks, null, 2));
+	console.log();
 }
 
 async function main() {

@@ -9,9 +9,9 @@ function buildErrorList() {
 		};
 	}
 	
-	addError(1000, 'FAIL', "An error occurred");
-	addError(1001, 'EXT_SVC_FAIL', "External service failure");
-	addError(1002, 'NOT_FOUND', "The item does not exist");
+	addError(1000, 'FAIL', 'An error occurred');
+	addError(1001, 'NOT_FOUND', 'The item does not exist');
+	addError(1002, 'EXT_SVC_FAIL', 'External service failure');
 	
 	return errors;
 }

@@ -2,8 +2,6 @@
 
 const express = require('express');
 
-const errors = require('./app-errors');
-
 module.exports = function (services) {
 	
 	function onError(req, res, err) {
@@ -17,7 +15,7 @@ module.exports = function (services) {
 			default:
 				res.status(500);
 		}
-		res.json(err);
+		res.json({ cause: err });
 	}
 	
 	async function searchInGlobalBooks(req, res) {
@@ -83,4 +81,4 @@ module.exports = function (services) {
 	router.delete('/my/books/:bookId', deleteMyBookById);
 	
 	return router;
-}
+};

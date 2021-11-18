@@ -7,6 +7,32 @@ const fetch = require('node-fetch');
 const GOOGLE_BOOKS_BASE_URI = 
 	'https://www.googleapis.com/books/v1/volumes';
 
+const HTTP_SERVER_ERROR = 5;
+
+function getStatusClass(statusCode) {
+	return ~~(statusCode / 100);
+}
+
+function do_fetch(uri) {
+	return fetch(uri)
+		.catch(err => { throw errors.EXT_SVC_FAIL(err); })
+		.then(res => {
+			if (res.ok) {
+				return res.json();
+			} else {
+				if (getStatusClass(res.status) === HTTP_SERVER_ERROR) {
+					return res.text()
+						.catch (err => err) // can you see what this does?
+						.then(errDesc => {
+							throw errors.EXT_SVC_FAIL({ res, errDesc });
+						});
+				} else {
+					throw errors.FAIL(res); 
+				}
+			}
+		});	
+}
+
 function findId(info, type) {
 	return info.industryIdentifiers &&
 		info.industryIdentifiers
@@ -28,22 +54,6 @@ function makeBookObj(bookInfo) {
 	};	
 }
 
-function do_fetch(uri) {
-	return fetch(uri)
-		.catch(err => {
-			throw errors.EXT_SVC_FAIL(err);
-		})
-		.then(res => {
-			if (res.ok) {
-				return res.json();
-			} else {
-				return res.json().then(errDesc => {
-					throw errors.EXT_SVC_FAIL({ res, errDesc });
-				});
-			}
-		});	
-}
-
 function findBook(query) {
 	const search_uri = GOOGLE_BOOKS_BASE_URI + '?q=' + query;
 	
@@ -52,7 +62,7 @@ function findBook(query) {
 			if (answer.items && answer.items.length) {
 				return makeBookObj(answer.items[0]);
 			} else {
-				return null;
+				throw errors.NOT_FOUND({ query });
 			}
 		});
 }
