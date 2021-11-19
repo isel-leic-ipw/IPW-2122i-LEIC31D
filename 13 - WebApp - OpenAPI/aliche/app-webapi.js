@@ -12,6 +12,10 @@ module.exports = function (services) {
 			case 'EXT_SVC_FAIL':
 				res.status(502);
 				break;
+			case 'MISSING_PARAM': 
+			case 'INVALID_PARAM': 
+				res.status(400);
+				break;
 			default:
 				res.status(500);
 		}
@@ -49,8 +53,8 @@ module.exports = function (services) {
 	async function addMyBookById(req, res) {
 		try {
 			const bookId = req.body.bookId;
-			const bookIdRes = await services.addBook(bookId);
-			res.json(bookIdRes);
+			const addBookRes = await services.addBook(bookId);
+			res.json(addBookRes);
 		} catch (err) {
 			onError(req, res, err);
 		}
