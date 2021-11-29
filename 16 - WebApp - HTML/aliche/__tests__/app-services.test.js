@@ -33,13 +33,12 @@ describe('Search tests', () => {
 	});
 
 	test('search for inexisting book', async () => {
-		const services = services_builder(
-			{ 
-				findBook: async (query) => {
+		const services =
+			services_builder({
+				findBook: async () => {
 					throw errors.NOT_FOUND('no book');
 				}
-			}
-		); 
+		}); 
 		
 		try {
 			await services.searchBook('inexisting book');
@@ -68,8 +67,9 @@ describe('Tests with DB', () => {
 	//afterAll(...);
 
 	//beforeEach(...);
-	afterEach(async () => { await test_data_intexit
-	.deleteAllBooks(); });
+	afterEach(async () => {
+		await test_data_int.deleteAllBooks();
+	});
 
 	test('save existing book', async () => {
 		const bookId = 'E00FkgEACAAJ';
