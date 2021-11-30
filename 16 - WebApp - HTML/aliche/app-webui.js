@@ -10,6 +10,10 @@ module.exports = function (services) {
 		dotfiles: 'deny'
 	};
 
+	function getToken(req) {
+		return 'fz3zMebxQXybYskc567j5w'; // to be improved...
+	}
+	
 	function getHomepage(req, res) {
 		res.sendFile('home.html', fileOptions);
 	} 
@@ -60,9 +64,40 @@ module.exports = function (services) {
 			`);
 		}
 
+		function produceBook(book) {
+			return `
+					<p>Query: ${query}</p>
+					<table>
+						<tr>
+							<td>Title:</td>
+							<td>${book.title}</td>
+						</tr>
+						<tr>
+							<td>Author(s):</td>
+							<td>${book.authors ? book.authors.join('<br>') : '--'}</td>
+						</tr>
+					</table>
+				`;
+		}
+	
 		function produceNoQuery() {
 			return `
 					<strong>ERROR:</strong> no query provided
+				`;
+		}
+		
+		function produceNotFound() {
+			return `
+					<p>Query: ${query}</p>
+					<p>ERROR: no book found for this query</p>
+				`;
+		}
+		
+		function produceError(errText) {
+			console.log('ERROR', err);
+			return `
+					<p>Query: ${query}</p>
+					<p>ERROR: ${errText}</p>
 				`;
 		}
 	}
