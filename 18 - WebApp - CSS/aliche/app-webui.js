@@ -131,11 +131,11 @@ module.exports = function (services, guest_token) {
 	// Find in library
 	router.get('/library', findInLibrary);
 	
-	// Save book
-	router.post('/books', saveBook);
-	
 	// List saved books
 	router.get('/books', listSavedBooks);
+	
+	// Save book
+	router.post('/books', saveBook);
 	
 	// Show book
 	router.get('/books/:bookId', showBookDetails);
