@@ -23,7 +23,10 @@ module.exports = function (services, guest_token) {
 		try {
 			const bookRes = await services.searchBook(query);
 			const book = bookRes.book;
-			res.render('book', { header, query, book });
+			res.render(
+				'book',
+				{ header, query, book, allowSave: true }
+			);
 		} catch (err) {
 			switch (err.name) {
 				case 'MISSING_PARAM':
@@ -88,7 +91,36 @@ module.exports = function (services, guest_token) {
 		}
 	}
 
+
+	async function saveBook(req, res) {
+		const header = 'Save Book Result';
+		const token  = getToken(req);
+		const bookId = req.body.bookId;		
+		try {
+			await services.addBook(token, bookId);
+			res.redirect('/books');
+		} catch (err) {
+			switch (err.name) {
+				case 'MISSING_PARAM':
+					res.status(400).render('book', { header, error: 'no bookId provided' });
+					break;
+				case 'UNAUTHENTICATED':
+					res.status(401).render('book', { header, error: 'login required' });
+					break;
+				case 'NOT_FOUND':
+					res.status(404).render('book', { header, error: `no book found with id ${bookId}` });
+					break;
+				default:
+					console.log(err);
+					res.status(500).render('book', { header, error: JSON.stringify(err) });
+					break;
+			}
+		}
+	}
+
 	const router = express.Router();
+	
+	router.use(express.urlencoded({ extended: true }));
 	
 	// Homepage
 	router.get('/', getHomepage);
@@ -98,6 +130,9 @@ module.exports = function (services, guest_token) {
 
 	// Find in library
 	router.get('/library', findInLibrary);
+	
+	// Save book
+	router.post('/books', saveBook);
 	
 	// List saved books
 	router.get('/books', listSavedBooks);

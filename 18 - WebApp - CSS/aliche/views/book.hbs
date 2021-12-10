@@ -32,6 +32,14 @@
 			<td>{{book.publisher}}</td>
 		</tr>
 </table>
+
+{{#if allowSave}}
+<form action='/books' method='POST'>
+	<input type='hidden' name='bookId' value='{{book.id}}'>
+	<input type='submit' value='Save'>
+</form>
+{{/if}}
+
 {{/if}}
 
 {{#if error}}
