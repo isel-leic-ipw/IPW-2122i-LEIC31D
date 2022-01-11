@@ -64,13 +64,11 @@ describe('Search tests', () => {
 
 describe('Tests with DB', () => {
 
-	//beforeAll(...);
+	beforeAll(() => test_data_int.deleteAllBooks());
 	//afterAll(...);
 
 	//beforeEach(...);
-	afterEach(async () => {
-		await test_data_int.deleteAllBooks();
-	});
+	afterEach(() => test_data_int.deleteAllBooks());
 
 	test('save existing book', async () => {
 		const bookId = 'E00FkgEACAAJ';
@@ -79,7 +77,7 @@ describe('Tests with DB', () => {
 		expect(addRes).toBeDefined();
 		expect(addRes.bookId).toEqual(bookId);
 		const checkRes = await
-			test_data_int.loadBook(test_user.user, bookId);
+			test_data_int.loadBook(test_user.username, bookId);
 		expect(checkRes.id).toEqual(bookId);
 	});
 
